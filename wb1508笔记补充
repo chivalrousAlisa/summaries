@@ -1,1 +1,29 @@
+Safari 浏览器，display：inline-block；会有水平方向对不起的问题，要写 veritcal-align：top 样式
 
+Canvas直接绘图
+1.canvas元素width和height
+可以通过style属性设置，会将绘制的图形拉伸，通过style元素设置，会按比例放大，因此要通过属性方法设置,通过属性方法设置的不支持百分比的值
+属性决定画布坐标 因此通过属性方式的百分比的，画的值为百分比。
+移动端，解决因比率失真问题，style和属性 width 都要动态设置
+// *****************解决移动端糊的问题
+diametral 为容器的直径
+let dpr = window.devicePixelRatio; // 假设dpr为2
+// 根据dpr，扩大canvas画布的像素，使1个canvas像素和1个物理像素相等
+canvasDom.style.width = diametral + 'px';
+canvasDom.style.height = diametral + 'px';
+canvasDom.width = dpr * diametral;
+canvasDom.height = dpr * diametral;
+// 由于画布扩大，canvas的坐标系也跟着扩大，如果按照原先的坐标系绘图内容会缩小
+// 所以需要将绘制比例放大
+canvasCtx.scale(dpr, dpr);
+
+对滚动scrollWidth 和 scrollHeight 的理解
+想想模拟滚动条的实现：两个元素，
+最大滚动距离：横向滚动条
+maxScroll = scrollWidth - rectObject.width; 
+模拟通过改变，绝对定位，通过改变left值
+mockScrollWidth = mockScrollDom.getBoundingClientRect().width;//底部灰色
+mockMaskSrollWidth = mockScrollMaskDom.getBoundingClientRect().width;// 滚动的元素，即要改变left值的元素
+maxMockLeft = mockScrollWidth - mockMaskSrollWidth;
+
+一个元素距离顶部的距离，为e.target.getBoundingClientRect().top 加上scrollTop（滚动距离）。 在处理 position：absolute。 需要动态计算 top值 会用到。e.target.offsetTop是固定的，不会随着滚动条滚动而改变。e.target.getBoundingClientRect().top 会随着滚动条滚动而改变， 当页面没有滚动，即scrollTop=0时。 position：absolute的值是我们需要的。当滚动时，就是e.target.getBoundingClientRect().top + scrollTop；
